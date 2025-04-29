@@ -16,7 +16,6 @@ async function worker() {
     const directExchange = "calc_direct_exchange";
     const fanoutExchange = "calc_fanout_exchange";
     const resultQueue = "calc_results";
-
     const divQueue = "div_queue";
 
     await channel.assertExchange(directExchange, "direct", { durable: false });

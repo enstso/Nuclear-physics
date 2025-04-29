@@ -9,6 +9,7 @@ async function worker() {
       console.error("Please provide an operation (e.g., mul) as a command line argument.");
       process.exit(1);
     }
+    
     const connection = await amqp.connect(rabbitmqUrl);
     const channel = await connection.createChannel();
 

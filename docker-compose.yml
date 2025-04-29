@@ -26,10 +26,10 @@ services:
       - rabbitmq
     entrypoint: ["wait-for-it", "${RABBITMQ_HOST}:${RABBITMQ_PORT}", "--", "node", "index.js"]
 
-  nodejs-producer:
+  nodejs-worker:
     build:
-      context: ./producer
-    container_name: nodejs-producer
+      context: ./worker
+    container_name: nodejs-worker
     ports:
       - "3001:3000"
     environment:
@@ -38,6 +38,18 @@ services:
     depends_on:
       - rabbitmq
     entrypoint: ["wait-for-it", "nodejs-consumer:3000", "--", "node", "index.js"]
+  nodejs-producer:
+    build:
+      context: ./producer
+    container_name: nodejs-producer
+    ports:
+      - "3002:3000"
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - NODE_ENV=${NODE_ENV}
+    depends_on:
+      - rabbitmq
+    entrypoint: ["wait-for-it", "nodejs-consumer:3001", "--", "node", "index.js"]
 
 volumes:
   rabbitmq_data:

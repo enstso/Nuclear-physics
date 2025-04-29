@@ -1,6 +1,6 @@
 const amqp = require("amqplib");
 
-async function consume() {
+async function worker() {
   try {
     const rabbitmqUrl = process.env.RABBITMQ_URL;
 
@@ -13,4 +13,4 @@ async function consume() {
   }
 }
 
-consume();
+worker();

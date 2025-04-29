@@ -26,10 +26,10 @@ services:
       - rabbitmq
     entrypoint: ["wait-for-it", "${RABBITMQ_HOST}:${RABBITMQ_PORT}", "--", "node", "index.js"]
 
-  nodejs-worker:
+  nodejs-worker-add:
     build:
-      context: ./worker
-    container_name: nodejs-worker
+      context: ./worker_add
+    container_name: nodejs-worker-add
     ports:
       - "3001:3000"
     environment:
@@ -37,7 +37,47 @@ services:
       - NODE_ENV=${NODE_ENV}
     depends_on:
       - rabbitmq
-    entrypoint: ["wait-for-it", "nodejs-consumer:3000", "--", "node", "index.js"]
+    entrypoint: ["wait-for-it", "nodejs-consumer:3000", "--", "node", "index.js","add"]
+  
+  nodejs-worker-sub:
+    build:
+      context: ./worker_sub
+    container_name: nodejs-worker-sub
+    ports:
+      - "3003:3000"
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - NODE_ENV=${NODE_ENV}
+    depends_on:
+      - rabbitmq
+    entrypoint: ["wait-for-it", "nodejs-consumer:3000", "--", "node", "index.js","sub"]
+  
+  nodejs-worker-mul:
+    build:
+      context: ./worker_mul
+    container_name: nodejs-worker-mul
+    ports:
+      - "3004:3000"
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - NODE_ENV=${NODE_ENV}
+    depends_on:
+      - rabbitmq
+    entrypoint: ["wait-for-it", "nodejs-consumer:3000", "--", "node", "index.js","mul"]
+
+  nodejs-worker-div:
+   build:
+     context: ./worker_div
+   container_name: nodejs-worker-div
+   ports:
+     - "3005:3000"
+   environment:
+     - RABBITMQ_URL=${RABBITMQ_URL}
+     - NODE_ENV=${NODE_ENV}
+   depends_on:
+     - rabbitmq
+   entrypoint: ["wait-for-it", "nodejs-consumer:3000", "--", "node", "index.js","div"]
+
   nodejs-producer:
     build:
       context: ./producer

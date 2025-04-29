@@ -6,21 +6,23 @@ async function produce() {
 
     const connection = await amqp.connect(rabbitmqUrl);
     const channel = await connection.createChannel();
-    const requestQueue = "calc_requests";
-    channel.assertQueue(requestQueue, {
-      durable: false,
-    });
+
+    const exchange = "calc_direct_exchange";
+    await channel.assertExchange(exchange, "direct", { durable: false });
+
+    const operations = ["add", "sub", "mul", "div"];
 
     setInterval(() => {
       const n1 = Math.floor(Math.random() * 100);
       const n2 = Math.floor(Math.random() * 100);
+      const op = operations[Math.floor(Math.random() * operations.length)];
+
       const msg = JSON.stringify({ n1, n2 });
-      channel.sendToQueue(requestQueue, Buffer.from(msg));
-      console.log("📤 Sent:", msg);
+      channel.publish(exchange, op, Buffer.from(msg)); // op = routingKey
+      console.log(`📤 Envoyé (${op}):`, msg);
     }, 5000);
   } catch (err) {
-
-    console.error("Error connecting to RabbitMQ:", err);
+    console.error("❌ Erreur de connexion à RabbitMQ:", err);
     process.exit(1);
   }
 }

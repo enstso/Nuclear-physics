@@ -13,18 +13,24 @@ async function worker() {
     const connection = await amqp.connect(rabbitmqUrl);
     const channel = await connection.createChannel();
 
-    const exchange = "calc_direct_exchange";
+    const directExchange = "calc_direct_exchange";
+    const fanoutExchange = "calc_fanout_exchange";
     const resultQueue = "calc_results";
-    const queue = "div_queue";
 
-    await channel.assertExchange(exchange, "direct", { durable: false });
+    const divQueue = "div_queue";
+
+    await channel.assertExchange(directExchange, "direct", { durable: false });
+    await channel.assertExchange(fanoutExchange, "fanout", { durable: false });
+   
     await channel.assertQueue(resultQueue, { durable: false });
-    await channel.assertQueue(queue, { durable: false });
-    await channel.bindQueue(queue, exchange, operation);
+    await channel.assertQueue(divQueue, { durable: false });
+
+    await channel.bindQueue(divQueue, directExchange, operation);
+    await channel.bindQueue(divQueue, fanoutExchange, "");
 
     console.log(`🔧 Waiting for "${operation}" messages...`);
 
-    channel.consume(queue, async (msg) => {
+    channel.consume(divQueue, async (msg) => {
       if (msg !== null) {
         const { n1, n2 } = JSON.parse(msg.content.toString());
         console.log("📥 Received:", n1, n2);

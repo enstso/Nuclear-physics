@@ -9,26 +9,26 @@ async function worker() {
       console.error("Please provide an operation (e.g., mul) as a command line argument.");
       process.exit(1);
     }
-
     const connection = await amqp.connect(rabbitmqUrl);
     const channel = await connection.createChannel();
 
-    const exchange = "calc_direct_exchange";
+    const directExchange = "calc_direct_exchange";
+    const fanoutExchange = "calc_fanout_exchange";
     const resultQueue = "calc_results";
-    const queue = "mul_queue";
+    const mulQueue = "mul_queue";
 
-    await channel.assertExchange(exchange, "direct", { durable: false });
+    await channel.assertExchange(directExchange, "direct", { durable: false });
+    await channel.assertExchange(fanoutExchange, "fanout", { durable: false });
+
     await channel.assertQueue(resultQueue, { durable: false });
+    await channel.assertQueue(mulQueue, { durable: false });
 
-    // Create a temporary exclusive queue for this worker
-    await channel.assertQueue(queue, { durable: false });
-
-    // Bind the queue to the exchange using the operation as routing key
-    await channel.bindQueue(queue, exchange, operation);
+    await channel.bindQueue(mulQueue, directExchange, operation);
+    await channel.bindQueue(mulQueue, fanoutExchange, "");
 
     console.log(`🔧 Waiting for "${operation}" messages...`);
 
-    channel.consume(queue, async (msg) => {
+    channel.consume(mulQueue, async (msg) => {
       if (msg !== null) {
         const { n1, n2 } = JSON.parse(msg.content.toString());
         console.log("📥 Received:", n1, n2);

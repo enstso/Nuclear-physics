@@ -3,31 +3,32 @@ const amqp = require("amqplib");
 async function worker() {
   try {
     const rabbitmqUrl = process.env.RABBITMQ_URL;
-    const operation = process.argv[2]; // e.g., 'sub'
+    const operation = process.argv[2]; // e.g., "sub"
 
     if (!operation) {
       console.error("Please provide an operation (e.g., sub) as a command line argument.");
       process.exit(1);
     }
-
     const connection = await amqp.connect(rabbitmqUrl);
     const channel = await connection.createChannel();
 
-    const exchange = "calc_direct_exchange";
+    const directExchange = "calc_direct_exchange";
+    const fanoutExchange = "calc_fanout_exchange";
     const resultQueue = "calc_results";
-    const queue = "sub_queue";
+    const subQueue = "sub_queue";
 
-    await channel.assertExchange(exchange, "direct", { durable: false });
-    await channel.assertQueue(queue, { durable: false });
-
-    // Bind the queue to the exchange with the operation as the routing key
-    await channel.bindQueue(queue, exchange, operation);
+    await channel.assertExchange(directExchange, "direct", { durable: false });
+    await channel.assertExchange(fanoutExchange, "fanout", { durable: false });
 
     await channel.assertQueue(resultQueue, { durable: false });
+    await channel.assertQueue(subQueue, { durable: false });
 
-    console.log(`🔧 Waiting for messages with operation "${operation}"...`);
+    await channel.bindQueue(subQueue, directExchange, operation);
+    await channel.bindQueue(subQueue, fanoutExchange, "");
 
-    channel.consume(queue, async (msg) => {
+    console.log(`🔧 Waiting for "${operation}" messages...`);
+
+    channel.consume(subQueue, async (msg) => {
       if (msg !== null) {
         const { n1, n2 } = JSON.parse(msg.content.toString());
         console.log("📥 Received:", n1, n2);

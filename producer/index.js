@@ -7,10 +7,13 @@ async function produce() {
     const connection = await amqp.connect(rabbitmqUrl);
     const channel = await connection.createChannel();
 
-    const exchange = "calc_direct_exchange";
-    await channel.assertExchange(exchange, "direct", { durable: false });
+    const directExchange = "calc_direct_exchange";
+    const fanoutExchange = "calc_fanout_exchange";
 
-    const operations = ["add", "sub", "mul", "div"];
+    await channel.assertExchange(directExchange, "direct", { durable: false });
+    await channel.assertExchange(fanoutExchange, "fanout", { durable: false });
+
+    const operations = ["add", "sub", "mul", "div", "all"];
 
     setInterval(() => {
       const n1 = Math.floor(Math.random() * 100);
@@ -18,8 +21,14 @@ async function produce() {
       const op = operations[Math.floor(Math.random() * operations.length)];
 
       const msg = JSON.stringify({ n1, n2 });
-      channel.publish(exchange, op, Buffer.from(msg)); // op = routingKey
-      console.log(`📤 Envoyé (${op}):`, msg);
+
+      if (op === "all") {
+        channel.publish(fanoutExchange, "", Buffer.from(msg));
+        console.log(`📤 Envoyé (ALL via fanout):`, msg);
+      } else {
+        channel.publish(directExchange, op, Buffer.from(msg));
+        console.log(`📤 Envoyé (${op} via direct):`, msg);
+      }
     }, 5000);
   } catch (err) {
     console.error("❌ Erreur de connexion à RabbitMQ:", err);

@@ -6,8 +6,8 @@ async function produce() {
 
     const connection = await amqp.connect(rabbitmqUrl);
     const channel = await connection.createChannel();
-    const queue = "calc_request";
-    channel.assertQueue(queue, {
+    const requestQueue = "calc_requests";
+    channel.assertQueue(requestQueue, {
       durable: false,
     });
 
@@ -15,10 +15,11 @@ async function produce() {
       const n1 = Math.floor(Math.random() * 100);
       const n2 = Math.floor(Math.random() * 100);
       const msg = JSON.stringify({ n1, n2 });
-      ch.sendToQueue(queue, Buffer.from(msg));
+      channel.sendToQueue(requestQueue, Buffer.from(msg));
       console.log("📤 Sent:", msg);
     }, 5000);
   } catch (err) {
+
     console.error("Error connecting to RabbitMQ:", err);
     process.exit(1);
   }

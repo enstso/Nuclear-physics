@@ -8,7 +8,7 @@ async function worker() {
     const channel = await connection.createChannel();
     const requestQueue = "calc_requests";
     const resultQueue = "calc_results";
-
+    
     channel.assertQueue(requestQueue, { durable: false });
     channel.assertQueue(resultQueue, { durable: false });
 

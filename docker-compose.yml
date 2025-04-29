@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # Port AMQP
+      - "15672:15672"  # Port pour l'interface de gestion
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  nodejs-consumer:
+    build:
+      context: ./consumer
+    container_name: nodejs-consumer
+    ports:
+      - "3000:3000"
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - NODE_ENV=${NODE_ENV}
+    depends_on:
+      - rabbitmq
+    entrypoint: ["wait-for-it", "${RABBITMQ_HOST}:${RABBITMQ_PORT}", "--", "node", "index.js"]
+
+  nodejs-producer:
+    build:
+      context: ./producer
+    container_name: nodejs-producer
+    ports:
+      - "3001:3000"
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - NODE_ENV=${NODE_ENV}
+    depends_on:
+      - rabbitmq
+    entrypoint: ["wait-for-it", "nodejs-consumer:3000", "--", "node", "index.js"]
+
+volumes:
+  rabbitmq_data:
+    driver: local

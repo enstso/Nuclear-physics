@@ -1,39 +1,56 @@
+const express = require("express");
 const amqp = require("amqplib");
 
-async function produce() {
-  try {
-    const rabbitmqUrl = process.env.RABBITMQ_URL;
+const app = express();
+app.use(express.json());
 
-    const connection = await amqp.connect(rabbitmqUrl);
-    const channel = await connection.createChannel();
+const RABBITMQ_URL = process.env.RABBITMQ_URL;
+const directExchange = "calc_direct_exchange";
+const fanoutExchange = "calc_fanout_exchange";
 
-    const directExchange = "calc_direct_exchange";
-    const fanoutExchange = "calc_fanout_exchange";
+let channel;
 
-    await channel.assertExchange(directExchange, "direct", { durable: false });
-    await channel.assertExchange(fanoutExchange, "fanout", { durable: false });
+async function connectRabbitMQ() {
+  const connection = await amqp.connect(RABBITMQ_URL);
+  channel = await connection.createChannel();
 
-    const operations = ["add", "sub", "mul", "div", "all"];
+  await channel.assertExchange(directExchange, "direct", { durable: false });
+  await channel.assertExchange(fanoutExchange, "fanout", { durable: false });
 
-    setInterval(() => {
-      const n1 = Math.floor(Math.random() * 100);
-      const n2 = Math.floor(Math.random() * 100);
-      const op = operations[Math.floor(Math.random() * operations.length)];
-
-      const msg = JSON.stringify({ n1, n2 });
-
-      if (op === "all") {
-        channel.publish(fanoutExchange, "", Buffer.from(msg));
-        console.log(`📤 Envoyé (ALL via fanout):`, msg);
-      } else {
-        channel.publish(directExchange, op, Buffer.from(msg));
-        console.log(`📤 Envoyé (${op} via direct):`, msg);
-      }
-    }, 5000);
-  } catch (err) {
-    console.error("❌ Erreur de connexion à RabbitMQ:", err);
-    process.exit(1);
-  }
+  console.log("✅ Connected to RabbitMQ");
 }
 
-produce();
+app.post("/calc", async (req, res) => {
+  const { op, n1, n2 } = req.body;
+
+  if (!["add", "sub", "mul", "div", "all"].includes(op)) {
+    return res.status(400).json({ error: "Invalid operation" });
+  }
+
+  if (typeof n1 !== "number" || typeof n2 !== "number") {
+    return res.status(400).json({ error: "n1 and n2 must be numbers" });
+  }
+
+  const msg = JSON.stringify({ n1, n2 });
+
+  try {
+    if (op === "all") {
+      channel.publish(fanoutExchange, "", Buffer.from(msg));
+      console.log(`📤 Envoyé (ALL via fanout):`, msg);
+    } else {
+      channel.publish(directExchange, op, Buffer.from(msg));
+      console.log(`📤 Envoyé (${op} via direct):`, msg);
+    }
+
+    res.json({ status: "Message sent", op, n1, n2 });
+  } catch (err) {
+    console.error("❌ Error sending message:", err);
+    res.status(500).json({ error: "Failed to send message" });
+  }
+});
+
+connectRabbitMQ().then(() => {
+  app.listen(3000, () => {
+    console.log("🚀 Server listening on port 3000");
+  });
+});

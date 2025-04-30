@@ -145,6 +145,15 @@ curl http://localhost:3000/results
 
 ## 🚀 Lancer le projet (avec Docker Compose)
 
+### Cloner le dépôt
+
+```bash
+git clone https://github.com/enstso/Nuclear-physics.git
+cd Nuclear-physics
+git checkout api
+```
+
+
 Créer un fichier `.env` à partir de `.env.example`:
 
 ```bash

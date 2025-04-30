@@ -1,6 +1,4 @@
-Voici une version encore plus détaillée et optimisée de ton `README.md`, avec une mise en page améliorée, des descriptions claires, et des images intégrées pour une meilleure expérience utilisateur.
 
----
 
 # 🖥️ Interface Web – Calcul Distribué (Frontend React)
 
@@ -202,28 +200,9 @@ Après avoir cliqué sur "Supprimer tous les résultats", les résultats seront 
 
 ---
 
-## 🛠️ Contributions
 
-Si vous souhaitez contribuer au projet, suivez les étapes ci-dessous :
-
-1. Forkez ce repository.
-2. Créez une nouvelle branche pour votre fonctionnalité (`git checkout -b feature-name`).
-3. Effectuez vos changements et commitez-les (`git commit -m 'Add new feature'`).
-4. Poussez vos modifications sur votre fork (`git push origin feature-name`).
-5. Créez une pull request pour la revue de vos modifications.
-
----
 
 ## 📄 License
 
 Ce projet est sous la licence MIT.
 
----
-
-### Remarques supplémentaires
-
-- **Améliorations futures** : Ce projet pourra inclure des fonctionnalités supplémentaires comme l'historique des calculs ou des améliorations sur l'interface utilisateur.
-
----
-
-Cette version du `README.md` est encore plus détaillée et inclut des captures d'écran intégrées pour guider les utilisateurs dans l'utilisation du projet. Il fournit également une explication claire de la mise en place, de l'utilisation et des fonctionnalités, ce qui rend l'expérience utilisateur plus agréable et complète.

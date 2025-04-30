@@ -145,7 +145,9 @@ Après avoir cliqué sur "Supprimer tous les résultats", les résultats seront 
 2. **Saisie des calculs** :
    Saisissez deux nombres et sélectionnez une opération (addition, soustraction, multiplication, division, ou "Tous les calculs").
 
-   ![Formulaire d'envoi d'opération](./screenshots/form-submit.png)
+  
+<img width="956" alt="image" src="https://github.com/user-attachments/assets/3fe08aaf-a0a3-430f-b818-3aadb89d91b5" />
+
 
 3. **Envoyer l'opération** :
    Cliquez sur "Envoyer". Les résultats seront envoyés et affichés sous forme de liste, avec les derniers résultats affichés en haut.

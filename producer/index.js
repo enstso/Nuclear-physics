@@ -4,6 +4,10 @@ const amqp = require("amqplib");
 const app = express();
 app.use(express.json());
 
+const cors = require('cors');
+app.use(cors({
+  origin: "http://localhost:5173"
+}));
 const RABBITMQ_URL = process.env.RABBITMQ_URL;
 const directExchange = "calc_direct_exchange";
 const fanoutExchange = "calc_fanout_exchange";

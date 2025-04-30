@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetch('http://localhost:3001/results')
+      fetch('http://localhost:3000/results')
         .then(res => res.json())
         .then(data => setResults(data))
         .catch(err => console.error(err));
@@ -27,7 +27,7 @@ function App() {
     };
 
     try {
-      const response = await fetch('http://localhost:3001/calculate', {
+      const response = await fetch('http://localhost:3002/calc', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

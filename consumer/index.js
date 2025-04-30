@@ -1,26 +1,51 @@
+const express = require("express");
 const amqp = require("amqplib");
 
-async function consume() {
-  try {
-    const rabbitmqUrl = process.env.RABBITMQ_URL;
+const app = express();
+app.use(express.json());
 
-    const connection = await amqp.connect(rabbitmqUrl);
-    const channel = await connection.createChannel();
-    const resultQueue = "calc_results";
+const cors = require('cors');
+app.use(cors({
+  origin: "http://localhost:5173"
+  
+}));
 
-    await channel.assertQueue(resultQueue, { durable: false });
+const RABBITMQ_URL = process.env.RABBITMQ_URL || "amqp://localhost";
+const RESULT_QUEUE = "calc_results";
 
-    channel.consume(resultQueue, (msg) => {
-      if (msg !== null) {
-        const res = JSON.parse(msg.content.toString());
-        console.log("📥 Result received:", res);
-        channel.ack(msg); // Acknowledge the message after processing
-      }
-    });
-  } catch (err) {
-    console.error("Error connecting to RabbitMQ:", err);
-    process.exit(1);
-  }
+let channel;
+const results = []; // mémoire temporaire (FIFO)
+
+// ➕ Consommation des résultats
+async function connectAndConsumeResults() {
+  const connection = await amqp.connect(RABBITMQ_URL);
+  channel = await connection.createChannel();
+  await channel.assertQueue(RESULT_QUEUE, { durable: true });
+
+  channel.consume(RESULT_QUEUE, (msg) => {
+    if (msg !== null) {
+      const res = JSON.parse(msg.content.toString());
+      console.log("📥 Result received:", res);
+      results.push(res);
+
+      // Garde seulement les 100 derniers résultats
+      if (results.length > 100) results.shift();
+
+      channel.ack(msg);
+    }
+  });
+
+  console.log("📡 Listening for results on:", RESULT_QUEUE);
 }
 
-consume();
+// 🚀 Endpoint pour récupérer les résultats
+app.get("/results", (req, res) => {
+  res.json(results);
+});
+
+// Démarrage
+connectAndConsumeResults().then(() => {
+  app.listen(3000, () => {
+    console.log("✅ Server listening on port 3000 (GET /results)");
+  });
+});

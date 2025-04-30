@@ -35,7 +35,10 @@ Le système s’appuie sur **RabbitMQ** pour assurer la communication entre diff
 
 ## 🔀 Changement de branche (Git)
 
-**Avant chaque changement de branche faire un docker-compose down**
+**Attention Avant chaque changement de branche faire:**  
+```bash
+docker-compose down
+```
 
 ```bash
 # Cloner le dépôt
@@ -81,14 +84,28 @@ cp .env.example .env
 docker-compose up --build
 ```
 
-### 3. Interface RabbitMQ
 
-Accès à l'interface d'administration RabbitMQ :  
-👉 http://localhost:15672  
-- **User** : `user`
-- **Password** : `password`
+### 3. Voir les résultats
+voir les logs des containers : via docker logs en cli ou docker Desktop du container au choix.
 
----
+
+<img width="950" alt="image" src="https://github.com/user-attachments/assets/5a829b9c-694b-422c-a2f3-b5b4dc2bfa1b" />
+
+ou
+
+récupérer l'id du container dont on veux voir les logs :
+
+```bash
+docker ps
+```
+prendre l'id
+
+```bash
+docker logs 
+```
+
+<img width="824" alt="image" src="https://github.com/user-attachments/assets/eb86f14e-0da1-4a9c-b621-7f167cbede9f" />
+
 
 ## 🧠 Schéma général (communication RabbitMQ)
 

@@ -20,7 +20,7 @@ async function worker() {
     await channel.assertExchange(directExchange, "direct", { durable: false });
     await channel.assertExchange(fanoutExchange, "fanout", { durable: false });
 
-    await channel.assertQueue(resultQueue, { durable: false });
+    await channel.assertQueue(resultQueue, { durable: true });
     await channel.assertQueue(addQueue, { durable: false });
 
     await channel.bindQueue(addQueue, directExchange, operation);

@@ -9,7 +9,7 @@ async function worker() {
       console.error("Please provide an operation (e.g., mul) as a command line argument.");
       process.exit(1);
     }
-    
+
     const connection = await amqp.connect(rabbitmqUrl);
     const channel = await connection.createChannel();
 
@@ -21,7 +21,7 @@ async function worker() {
     await channel.assertExchange(directExchange, "direct", { durable: false });
     await channel.assertExchange(fanoutExchange, "fanout", { durable: false });
 
-    await channel.assertQueue(resultQueue, { durable: false });
+    await channel.assertQueue(resultQueue, { durable: true });
     await channel.assertQueue(mulQueue, { durable: false });
 
     await channel.bindQueue(mulQueue, directExchange, operation);

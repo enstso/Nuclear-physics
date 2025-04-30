@@ -90,13 +90,14 @@ Accès à l'interface d'administration RabbitMQ :
 
 ## 🧠 Schéma général (communication RabbitMQ)
 
-```mermaid
-graph TD
-    Producer -->|n1, n2, op| RabbitMQ1((calc_direct/fanout exchange))
-    RabbitMQ1 -->|routing| Worker[Workers: add/sub/mul/div]
-    Worker -->|Résultat| RabbitMQ2((calc_results queue))
-    RabbitMQ2 --> Consumer
-```
+
+ ```mermaid
+ graph TD
+     Producer -->|n1, n2| RabbitMQ1[calc_requests queue]
+     RabbitMQ1 --> Worker
+     Worker -->|n1, n2, op, result| RabbitMQ2[calc_results queue]
+     RabbitMQ2 --> Consumer
+ ```
 
 ---
 

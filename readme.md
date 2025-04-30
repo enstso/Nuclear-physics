@@ -115,14 +115,6 @@ Chaque worker :
 - Exécute le calcul après un délai aléatoire
 - Renvoie le résultat au `consumer` via `calc_results`
 
-## 🧪 Test Manuel
-
-Tu peux modifier le `producer/index.js` pour tester une seule opération :
-
-```js
-const op = "add"; // remplace par "all" pour tous les workers
-```
-
 ---
 
 ## 📬 Interface RabbitMQ

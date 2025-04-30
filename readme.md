@@ -51,7 +51,9 @@ cd Nuclear-physics
 git checkout projet1
 ```
 
-### 2. Créer un fichier `.env`
+### 2. Créer un fichier `.env` à partir de `.env.example` :
+
+
 
 ```env
 RABBITMQ_URL=amqp://rabbitmq

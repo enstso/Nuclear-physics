@@ -7,7 +7,7 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors({
   origin: "http://localhost:5173"
-  
+
 }));
 
 const RABBITMQ_URL = process.env.RABBITMQ_URL || "amqp://localhost";
@@ -41,6 +41,13 @@ async function connectAndConsumeResults() {
 // 🚀 Endpoint pour récupérer les résultats
 app.get("/results", (req, res) => {
   res.json(results);
+});
+
+// 🗑️ Endpoint pour supprimer tous les résultats
+app.delete("/results", (req, res) => {
+  results.length = 0; // vide le tableau sans changer sa référence
+  console.log("🧹 Tous les résultats ont été supprimés.");
+  res.status(200).json({ message: "Tous les résultats ont été supprimés." });
 });
 
 // Démarrage

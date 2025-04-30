@@ -129,10 +129,3 @@ Les résultats s'affichent dans le terminal du `nodejs-consumer`, exemple :
 📥 Result received: { n1: 12, n2: 0, op: 'div', result: "Error: Division by zero" }
 ```
 
----
-
-## 📚 Extensions possibles
-
-- Ajouter un système de priorités (ex: priorité pour `add` ou `div`)
-- Persistance des logs dans une base de données
-- Interface web pour soumettre les calculs et afficher les résultats

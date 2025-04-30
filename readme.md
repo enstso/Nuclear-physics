@@ -35,6 +35,8 @@ Le système s’appuie sur **RabbitMQ** pour assurer la communication entre diff
 
 ## 🔀 Changement de branche (Git)
 
+**Avant chaque changement de branche faire un docker-compose down**
+
 ```bash
 # Cloner le dépôt
 git clone https://github.com/enstso/Nuclear-physics.git

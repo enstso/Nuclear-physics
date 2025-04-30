@@ -1,116 +1,143 @@
-# 🧠 Projet Nuclear-Physics (main branch)
+# 🧠 Projet Nuclear-Physics
 
-## 📝 Description
+## 📘 Contexte
 
-Ce projet a été réalisé dans le cadre d'une évaluation de mise en œuvre d’un système de calcul distribué. Le système utilise **RabbitMQ** comme broker de messages pour permettre la communication entre plusieurs entités :
+Ce projet a été réalisé dans le cadre d’une évaluation visant à simuler un **système de calcul distribué** pour le compte de l’Institut de Physique Nucléaire (NGI).
 
-- **Producer** : envoie périodiquement des requêtes de calcul aléatoires.
-- **Worker** : traite les requêtes (avec une latence simulée de 5 à 15 secondes) et retourne les résultats.
-- **Consumer** : lit les résultats des calculs et les affiche.
-
-Les messages sont échangés au format JSON via des files RabbitMQ. L’objectif est de simuler des calculs complexes de manière distribuée.
-
----
-
-## 🔧 Technologies utilisées
-
-| Technologie       | Rôle                                                                 |
-|-------------------|----------------------------------------------------------------------|
-| Node.js           | Langage de programmation pour le Producer, Worker, et Consumer       |
-| RabbitMQ          | Broker de messages (AMQP) pour la distribution des tâches            |
-| Docker & Docker Compose | Conteneurisation des services pour un déploiement simplifié      |
-| `amqplib`         | Bibliothèque Node.js pour communiquer avec RabbitMQ via AMQP         |
-| `wait-for-it.sh`  | Script pour s'assurer que RabbitMQ est prêt avant de démarrer les services Node.js |
-
-### 🎯 Pourquoi ces choix ?
-
-- **Node.js** : Léger, rapide à développer, excellent pour les opérations I/O et les microservices.
-- **RabbitMQ** : Robuste et standardisé pour les communications inter-processus asynchrones via le protocole AMQP.
-- **Docker** : Assure la portabilité et l’isolation de l’environnement pour faciliter la configuration et l’exécution du projet.
+Le système s’appuie sur **RabbitMQ** pour assurer la communication entre différents composants :
+- Producteurs de requêtes de calculs
+- Workers spécialisés par opération mathématique
+- Consommateur centralisant les résultats
+- Une API REST + interface graphique dans les dernières versions
 
 ---
 
-## 🗂️ Structure du projet
+## 🎯 Objectifs pédagogiques
 
-```
-.
-├── consumer/
-│   └── index.js
-├── worker/
-│   └── index.js
-├── producer/
-│   └── index.js
-├── docker-compose.yml
-├── .env.example
-├── wait-for-it.sh
-└── README.md
+- Mettre en œuvre un système distribué basé sur les messages.
+- Manipuler RabbitMQ, les échanges, les files et les bindings.
+- Implémenter des microservices en Node.js.
+- Gérer l’authentification, l’exposition d’une API REST et une interface React.
+
+---
+
+## 🔁 Vue d’ensemble des versions du projet
+
+| Branche        | Fonctionnalités principales                                                                                                                                     |
+|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `main`         | Version minimale du projet avec uniquement l’opération `add`                                                                                                   |
+| `projet1`      | Ajout des opérations `add`, `sub`, `mul`, `div` – chaque worker est spécialisé                                                                                  |
+| `projet2`      | Introduction du type d’opération `all`, qui permet d’envoyer la requête à **tous les workers**                                                                 |
+| `api`          | Introduction d’une **API REST Express** avec les routes `POST /calc` et `GET /results` et consommation via RabbitMQ                                           |
+| `front`        | Version finale : API complète, interface React, authentification admin, suppression des résultats via `DELETE /results`, et application conteneurisée (Docker) |
+
+---
+
+## 🔀 Changement de branche (Git)
+
+```bash
+# Cloner le dépôt
+git clone https://github.com/enstso/Nuclear-physics.git
+cd nuclear-physics
+
+# Liste des branches disponibles
+git branch -r
+
+# Exemple : passer à la branche projet2
+git checkout projet2
 ```
 
 ---
 
-## 📦 Installation & Lancement
+## 🧪 Fonctionnement global
 
-### 1. Pré-requis
+### ✅ Exemple de message envoyé par un producteur :
 
-- Docker & Docker Compose
-- Node.js (si vous exécutez les scripts hors Docker)
-
-### 2. Configuration
-
-Créer un fichier `.env` à partir de `.env.example` :
-
-```env
-RABBITMQ_USER=user
-RABBITMQ_PASS=password
-RABBITMQ_HOST=rabbitmq
-RABBITMQ_PORT=5672
-RABBITMQ_URL=amqp://user:password@rabbitmq:5672
-NODE_ENV=production
+```json
+{ "n1": 5, "n2": 3 }
 ```
 
-### 3. Lancer le projet
+### ✅ Réponse d’un worker (opération `add`) :
+
+```json
+{ "n1": 5, "n2": 3, "op": "add", "result": 8 }
+```
+
+---
+
+## 📦 Déploiement & Test (toutes versions)
+
+### 1. Créer le fichier `.env` (si nécessaire)
+
+```bash
+cp .env.example .env
+```
+
+### 2. Lancer tous les services
 
 ```bash
 docker-compose up --build
 ```
 
-### 4. Accéder à l’interface de gestion RabbitMQ
+### 3. Interface RabbitMQ
 
-Ouvrir un navigateur à l'adresse : [http://localhost:15672](http://localhost:15672)
-
-Login : `user`  
-Mot de passe : `password`
-
----
-
-## 🧪 Tests & Résultats
-
-- Toutes les **5 secondes**, le producer envoie une paire `{ n1, n2 }`.
-- Un **worker** récupère la requête, attend entre 5 et 15 secondes, puis renvoie le résultat de la somme.
-- Le **consumer** affiche à l’écran les résultats reçus.
+Accès à l'interface d'administration RabbitMQ :  
+👉 http://localhost:15672  
+- **User** : `user`
+- **Password** : `password`
 
 ---
 
-## 📊 Schéma de communication
+## 🧠 Schéma général (communication RabbitMQ)
 
 ```mermaid
 graph TD
-    Producer -->|n1, n2| RabbitMQ1[calc_requests queue]
-    RabbitMQ1 --> Worker
-    Worker -->|n1, n2, op, result| RabbitMQ2[calc_results queue]
+    Producer -->|n1, n2, op| RabbitMQ1((calc_direct/fanout exchange))
+    RabbitMQ1 -->|routing| Worker[Workers: add/sub/mul/div]
+    Worker -->|Résultat| RabbitMQ2((calc_results queue))
     RabbitMQ2 --> Consumer
 ```
 
 ---
 
-## ✅ Exemple de messages
+## 🧩 Fonctionnalités par branche
 
-**Message envoyé par le producer :**
-```json
-{ "n1": 12, "n2": 8 }
-```
+### 🌱 `main`
+- Producteur aléatoire (n1, n2)
+- Un seul worker (add)
+- Un consumer qui lit les résultats
+- Échange de base (1 file de requête, 1 file de réponse)
 
-**Message renvoyé par le worker :**
-```json
-{ "n1": 12, "n2": 8, "op": "add", "result": 20 }
-```
+### ➕ `projet1`
+- Workers spécialisés `add`, `sub`, `mul`, `div`
+- Producteur qui choisit aléatoirement une des 4 opérations
+- Utilisation d’un **échange direct**
+
+### 🌐 `projet2`
+- Ajout de l’opération `all`
+- Introduction d’un **échange fanout** pour la requête "toutes les opérations"
+- Tous les workers reçoivent une requête de type `all`
+
+### ⚙️ `api`
+- Ajout d’une API Express
+  - `POST /calc` pour soumettre une opération (via RabbitMQ)
+  - `GET /results` pour consulter les résultats collectés
+- Un **consumer Express** qui lit les résultats et les stocke temporairement en mémoire
+- Pas encore de frontend
+
+### 🖥️ `front` (version finale)
+- Interface web en React (port 5173)
+- Intégration complète avec l'API :
+  - Envoi de calculs
+  - Affichage des résultats en direct
+- Interface admin (auth : `admin`/`adminpassword`)
+  - Suppression de tous les résultats (`DELETE /results`)
+- Lancement :
+  ```bash
+  cd front
+  npm install
+  npm run dev
+  ```
+
+
+

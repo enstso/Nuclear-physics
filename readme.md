@@ -1,4 +1,4 @@
-# 📡 Nuclear-physics – (branch api)
+# 📡 Nuclear-physics – (api branch)
 
 Ce projet implémente un système de calcul distribué via une API Node.js (Express) qui utilise RabbitMQ pour distribuer les tâches à différents workers. Deux endpoints sont exposés : `/calc` pour envoyer une requête de calcul, et `/results` pour consulter les derniers résultats reçus.
 

@@ -52,6 +52,14 @@ flowchart LR
 
 ## 🚀 Lancement
 
+### 1. Cloner le dépôt
+
+```bash
+git clone https://github.com/enstso/Nuclear-physics.git
+cd Nuclear-physics
+git checkout projet2
+```
+
 ### Prérequis
 
 - Docker & Docker Compose

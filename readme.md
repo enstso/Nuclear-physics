@@ -30,7 +30,7 @@ flowchart LR
     end
 
     subgraph Result
-      R[calc_results (Consumer)]
+      R[calc_results]
     end
 
     P1 -->|op=add| E1

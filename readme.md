@@ -164,32 +164,31 @@ Après avoir cliqué sur "Supprimer tous les résultats", les résultats seront 
 
 ### Page de connexion (admin)
 
-![Login](./screenshots/login.png)
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/3d046017-53bc-487f-943e-f5b4ebcb3976" />
+
 
 ### Formulaire de calcul (Envoi de l'opération)
 
-![Formulaire d'envoi d'opération](<img width="956" alt="image" src="https://github.com/user-attachments/assets/3fe08aaf-a0a3-430f-b818-3aadb89d91b5" />
-)
+<img width="956" alt="image" src="https://github.com/user-attachments/assets/3fe08aaf-a0a3-430f-b818-3aadb89d91b5" />
+
 
 ### Résultats
 
-![Tableau des résultats](<img width="956" alt="image" src="https://github.com/user-attachments/assets/3fe08aaf-a0a3-430f-b818-3aadb89d91b5" />
-)
+<img width="956" alt="image" src="https://github.com/user-attachments/assets/3fe08aaf-a0a3-430f-b818-3aadb89d91b5" />
+
 
 ### Interface administrateur (avant suppression)
 
-![Admin - Avant suppression](<img width="958" alt="image" src="https://github.com/user-attachments/assets/41d5bf68-742f-4255-bacc-b5f79174156f" />
+<img width="958" alt="image" src="https://github.com/user-attachments/assets/41d5bf68-742f-4255-bacc-b5f79174156f" />
 
-)
 
 ### Interface administrateur (après suppression)
 
-![Admin - Après suppression](
+
 <img width="959" alt="image" src="https://github.com/user-attachments/assets/52f5a96a-44d4-48c1-bb8c-5acd55562408" />
 
 <img width="959" alt="image" src="https://github.com/user-attachments/assets/2a23bea3-a79f-40e4-992c-78f5901b0bf4" />
 
-)
 
 ---
 

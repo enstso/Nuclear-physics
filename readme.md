@@ -1,4 +1,4 @@
-# 🧠 Projet Nuclear-Physics
+# 🧠 Projet Nuclear-Physics (main branch)
 
 ## 📝 Description
 

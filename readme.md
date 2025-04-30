@@ -13,10 +13,11 @@ Ce projet met en place une architecture de calcul distribué basée sur **Rabbit
 
 ```mermaid
 graph TD
-  Producer -->|add| AddQueue
-  Producer -->|sub| SubQueue
-  Producer -->|mul| MulQueue
-  Producer -->|div| DivQueue
+  Producer --> Exchange
+  Exchange -->|add| AddQueue
+  Exchange -->|sub| SubQueue
+  Exchange -->|mul| MulQueue
+  Exchange -->|div| DivQueue
 
   AddQueue --> WorkerAdd
   SubQueue --> WorkerSub

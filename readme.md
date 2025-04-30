@@ -12,6 +12,34 @@ Le système s’appuie sur **RabbitMQ** pour assurer la communication entre diff
 
 ---
 
+## 📝 Description branche main
+
+Ce projet a été réalisé dans le cadre d'une évaluation de mise en œuvre d’un système de calcul distribué. Le système utilise **RabbitMQ** comme broker de messages pour permettre la communication entre plusieurs entités :
+
+- **Producer** : envoie périodiquement des requêtes de calcul aléatoires.
+- **Worker** : traite les requêtes (avec une latence simulée de 5 à 15 secondes) et retourne les résultats.
+- **Consumer** : lit les résultats des calculs et les affiche.
+
+Les messages sont échangés au format JSON via des files RabbitMQ. L’objectif est de simuler des calculs complexes de manière distribuée.
+
+## 🔧 Technologies utilisées
+
+| Technologie       | Rôle                                                                 |
+|-------------------|----------------------------------------------------------------------|
+| Node.js           | Langage de programmation pour le Producer, Worker, et Consumer       |
+| RabbitMQ          | Broker de messages (AMQP) pour la distribution des tâches            |
+| Docker & Docker Compose | Conteneurisation des services pour un déploiement simplifié      |
+| `amqplib`         | Bibliothèque Node.js pour communiquer avec RabbitMQ via AMQP         |
+| `wait-for-it.sh`  | Script pour s'assurer que RabbitMQ est prêt avant de démarrer les services Node.js |
+
+### 🎯 Pourquoi ces choix ?
+
+- **Node.js** : Léger, rapide à développer, excellent pour les opérations I/O et les microservices.
+- **RabbitMQ** : Robuste et standardisé pour les communications inter-processus asynchrones via le protocole AMQP.
+- **Docker** : Assure la portabilité et l’isolation de l’environnement pour faciliter la configuration et l’exécution du projet.
+
+---
+
 ## 🎯 Objectifs pédagogiques
 
 - Mettre en œuvre un système distribué basé sur les messages.

@@ -93,7 +93,8 @@ L'utilisateur peut saisir deux nombres (`n1` et `n2`) et sélectionner une opér
 
 Lorsque l'utilisateur soumet le formulaire, une requête `POST` est envoyée à l'API sur l'endpoint `/calc`. Les résultats sont ensuite récupérés via une requête `GET` à `/results`.
 
-![Page d'envoi d'opérations](./screenshots/send-operation.png)
+<img width="952" alt="image" src="https://github.com/user-attachments/assets/43a43dca-bc06-4ed7-a519-924f15c8b1fc" />
+
 
 ### 📊 Affichage des résultats
 
@@ -102,13 +103,16 @@ Les résultats des opérations sont affichés dans un tableau dynamique avec un 
 - **Affichage en temps réel** : Les résultats se mettent à jour dès qu'une nouvelle opération est effectuée.
 - **Tableau dynamique** : Les derniers résultats sont visibles en haut de la liste.
 
-![Tableau des résultats](./screenshots/results-table.png)
+<img width="956" alt="image" src="https://github.com/user-attachments/assets/3fe08aaf-a0a3-430f-b818-3aadb89d91b5" />
+
 
 ---
 
 ### 🔐 Interface administrateur (Suppression des résultats)
 
 L'interface administrateur permet de supprimer tous les résultats calculés. Cette fonctionnalité est protégée par un système de **login**.
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/3d046017-53bc-487f-943e-f5b4ebcb3976" />
+
 
 **Identifiants de connexion admin** :
 
@@ -120,12 +124,16 @@ Une fois connecté, l'administrateur peut vider les résultats en envoyant une r
 #### **Capture de la page admin avant suppression** :
 L'administrateur peut voir le tableau des résultats et choisir de les supprimer.
 
-![Interface Admin (Avant suppression)](./screenshots/admin-results.png)
+<img width="958" alt="image" src="https://github.com/user-attachments/assets/41d5bf68-742f-4255-bacc-b5f79174156f" />
+
 
 #### **Capture de la page admin après suppression** :
 Après avoir cliqué sur "Supprimer tous les résultats", les résultats seront vidés.
 
-![Interface Admin (Après suppression)](./screenshots/admin-empty.png)
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/52f5a96a-44d4-48c1-bb8c-5acd55562408" />
+
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/2a23bea3-a79f-40e4-992c-78f5901b0bf4" />
+
 
 ---
 
@@ -160,19 +168,28 @@ Après avoir cliqué sur "Supprimer tous les résultats", les résultats seront 
 
 ### Formulaire de calcul (Envoi de l'opération)
 
-![Formulaire d'envoi d'opération](./screenshots/form-submit.png)
+![Formulaire d'envoi d'opération](<img width="956" alt="image" src="https://github.com/user-attachments/assets/3fe08aaf-a0a3-430f-b818-3aadb89d91b5" />
+)
 
-### Page des résultats
+### Résultats
 
-![Tableau des résultats](./screenshots/results-table.png)
+![Tableau des résultats](<img width="956" alt="image" src="https://github.com/user-attachments/assets/3fe08aaf-a0a3-430f-b818-3aadb89d91b5" />
+)
 
 ### Interface administrateur (avant suppression)
 
-![Admin - Avant suppression](./screenshots/admin-results.png)
+![Admin - Avant suppression](<img width="958" alt="image" src="https://github.com/user-attachments/assets/41d5bf68-742f-4255-bacc-b5f79174156f" />
+
+)
 
 ### Interface administrateur (après suppression)
 
-![Admin - Après suppression](./screenshots/admin-empty.png)
+![Admin - Après suppression](
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/52f5a96a-44d4-48c1-bb8c-5acd55562408" />
+
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/2a23bea3-a79f-40e4-992c-78f5901b0bf4" />
+
+)
 
 ---
 

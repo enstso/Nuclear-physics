@@ -22,6 +22,8 @@ Ce projet a été réalisé dans le cadre d'une évaluation de mise en œuvre d�
 
 Les messages sont échangés au format JSON via des files RabbitMQ. L’objectif est de simuler des calculs complexes de manière distribuée.
 
+---
+
 ## 🔧 Technologies utilisées
 
 | Technologie       | Rôle                                                                 |

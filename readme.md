@@ -24,6 +24,7 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés :
 ```bash
 git clone https://github.com/enstso/Nuclear-physics.git
 cd Nuclear-physics
+git checkout front
 ```
 
 2. **Démarrez le projet complet avec Docker** :

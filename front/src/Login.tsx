@@ -14,6 +14,7 @@ const Login: React.FC<Props> = ({ onLoginSuccess }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (username === 'admin' && password === 'adminpassword') {
+      localStorage.setItem("isAdmin", "true"); // ✅ Enregistre que l'admin est connecté
       onLoginSuccess(username);
       navigate('/admin');
     } else {
